@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-//   // ✅ TEMP Redis test
+// ✅ TEMP Redis test
 //   try {
 //     await redis.set("test", "working");
 //     const value = await redis.get("test");
