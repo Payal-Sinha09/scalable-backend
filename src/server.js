@@ -1,17 +1,27 @@
-import app from "./app.js";
-import redis from "./config/redis.js";   // ✅ IMPORT REDIS
+import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/auth.routes.js";
+
+dotenv.config();
+
+const app = express();
+
+app.use(express.json()); // 👈 REQUIRED
+app.use("/api/auth", authRoutes); // 👈 REQUIRED
+
+connectDB();
 
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-
-  // ✅ TEMP Redis test
-  try {
-    await redis.set("test", "working");
-    const value = await redis.get("test");
-    console.log("Redis test value:", value);
-  } catch (err) {
-    console.error("Redis test failed:", err);
-  }
 });
+//   // ✅ TEMP Redis test
+//   try {
+//     await redis.set("test", "working");
+//     const value = await redis.get("test");
+//     console.log("Redis test value:", value);
+//   } catch (err) {
+//     console.error("Redis test failed:", err);
+//   }
+// });
