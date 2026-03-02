@@ -10,8 +10,15 @@ app.use(express.json());
 
 connectDB();
 
+// app.get("/", (req, res) => {
+//   res.send("API is running 🚀");
+// });
+
 app.get("/", (req, res) => {
-  res.send("API is running 🚀");
+  res.status(200).json({
+    message: "Scalable Backend API is running 🚀",
+    status: "OK"
+  });
 });
 
 export default app;
