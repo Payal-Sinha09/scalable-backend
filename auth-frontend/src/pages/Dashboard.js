@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const API = "https://scalable-backend-afac.onrender.com";
 
 function Dashboard() {
+
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
@@ -26,13 +27,11 @@ function Dashboard() {
       setUser(res.data.user);
     })
     .catch((err) => {
-      console.log("Token error:", err);
       localStorage.removeItem("token");
       navigate("/");
     });
 
   }, [navigate]);
-
 
 
   const logout = () => {
@@ -41,22 +40,48 @@ function Dashboard() {
   };
 
 
-
   return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h2>Dashboard</h2>
+
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "linear-gradient(to right, #4facfe, #00f2fe)",
+        color: "white",
+        fontFamily: "Arial"
+      }}
+    >
+
+      <h1>Dashboard</h1>
 
       {user ? (
         <>
-          <p>Welcome 🎉</p>
+          <h2>Welcome 🎉</h2>
           <p>User ID: {user.userId}</p>
 
-          <button onClick={logout}>Logout</button>
+          <button
+            onClick={logout}
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "16px"
+            }}
+          >
+            Logout
+          </button>
         </>
       ) : (
         <p>Loading...</p>
       )}
+
     </div>
+
   );
 }
 
