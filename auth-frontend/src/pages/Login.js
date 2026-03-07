@@ -22,7 +22,7 @@ export default function Login() {
       });
 
       alert("Login successful");
-
+      localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
 
     }catch(err){
