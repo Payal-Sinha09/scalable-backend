@@ -50,7 +50,9 @@ connectDB();
 // CORS configuration (important for React frontend)
 app.use(
   cors({
-    origin: "http://localhost:3000", // frontend URL
+    origin:[
+    "http://localhost:3000", // frontend URL
+    "https://auth-frontend-three-delta.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   })
