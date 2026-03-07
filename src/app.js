@@ -16,8 +16,9 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://vercel.com/payal-sinha09s-projects/auth-frontend"
+      "https://auth-frontend-three-delta.vercel.app"
     ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   })
 );
