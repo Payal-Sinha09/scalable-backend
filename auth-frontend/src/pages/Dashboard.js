@@ -59,8 +59,8 @@ function Dashboard() {
 
       {user ? (
         <>
-          <h2>Welcome 🎉</h2>
-          <p>User ID: {user.userId}</p>
+          <h2>Welcome {user.email}🎉</h2>
+          <p>Email: {user.email}</p>
 
           <button
             onClick={logout}
