@@ -8,22 +8,24 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    try {
+  e.preventDefault();
 
-      const res = await axios.post(`${API}/api/auth/forgot-password`, {
-        email
-      });
+  try {
 
-      alert(res.data.message);
+    const res = await axios.post(`${API}/api/auth/forgot-password`, {
+      email
+    });
 
-    } catch (err) {
+    alert("Reset Token: " + res.data.resetToken);
 
-      alert("Error sending reset link");
+  } catch (error) {
 
-    }
-  };
+    alert("Error generating reset token");
+
+  }
+
+};
 
   return (
     <div>

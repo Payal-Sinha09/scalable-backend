@@ -275,7 +275,6 @@ export const login = async (req, res) => {
 
 // FORGOT PASSWORD
 export const forgotPassword = async (req, res) => {
-
   try {
 
     const { email } = req.body;
@@ -286,6 +285,7 @@ export const forgotPassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Generate reset token
     const resetToken = crypto.randomBytes(20).toString("hex");
 
     user.resetPasswordToken = resetToken;
@@ -293,20 +293,16 @@ export const forgotPassword = async (req, res) => {
 
     await user.save();
 
-    // Send Email
-    await sendEmail(email, resetToken);
-
+    // Instead of sending email, return token
     res.json({
-      message: "Reset link sent to email"
+      message: "Reset token generated",
+      resetToken: resetToken
     });
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Error sending email"
-    });
+    res.status(500).json({ message: "Server error" });
   }
-
 };
 // RESET PASSWORD
 export const resetPassword = async (req, res) => {
