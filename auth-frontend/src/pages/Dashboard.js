@@ -27,6 +27,7 @@ function Dashboard() {
       setUser(res.data.user);
     })
     .catch((err) => {
+      console.log(err.response);
       localStorage.removeItem("token");
       navigate("/");
     });
