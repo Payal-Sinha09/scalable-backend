@@ -186,6 +186,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger.js";
 import crypto from "crypto";
+import sendEmail from "../utils/sendEmail.js";
 
 
 // REGISTER USER
@@ -292,24 +293,20 @@ export const forgotPassword = async (req, res) => {
 
     await user.save();
 
+    // Send Email
+    await sendEmail(email, resetToken);
+
     res.json({
-      message: "Password reset token generated",
-      resetToken
+      message: "Reset link sent to email"
     });
 
   } catch (error) {
-
-    logger.error(error.message);
-
     res.status(500).json({
-      message: "Server error"
+      message: "Error sending email"
     });
-
   }
 
 };
-
-
 // RESET PASSWORD
 export const resetPassword = async (req, res) => {
 
