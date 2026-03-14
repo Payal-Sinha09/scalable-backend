@@ -12,16 +12,6 @@ const app = express();
 
 // Middleware
 // app.use(cors());
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:3000",
-//       "https://auth-frontend-three-delta.vercel.app"
-//     ],
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//   })
-// );
 app.use(
   cors({
     origin: [
@@ -30,9 +20,20 @@ app.use(
       /vercel\.app$/
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://auth-frontend-three-delta.vercel.app",
+//       /vercel\.app$/
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true
+//   })
+// );
 app.use(express.json());
 
 // Connect Database
