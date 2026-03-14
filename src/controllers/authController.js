@@ -186,7 +186,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger.js";
 import crypto from "crypto";
-import sendEmail from "../utils/sendEmail.js";
+//import sendEmail from "../utils/sendEmail.js";
 
 
 // REGISTER USER
@@ -254,7 +254,7 @@ export const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    logger.info(`User login: ${email}`);
+    //logger.info(`User login: ${email}`);
 
     res.json({
       message: "Login successful",
@@ -306,7 +306,6 @@ export const forgotPassword = async (req, res) => {
 };
 // RESET PASSWORD
 export const resetPassword = async (req, res) => {
-
   try {
 
     const { token, password } = req.body;
@@ -317,14 +316,11 @@ export const resetPassword = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({
-        message: "Invalid or expired token"
-      });
+      return res.status(400).json({ message: "Invalid or expired token" });
     }
 
-    // HASH NEW PASSWORD
+    // HASH PASSWORD BEFORE SAVING
     const hashedPassword = await bcrypt.hash(password, 10);
-
     user.password = hashedPassword;
 
     user.resetPasswordToken = undefined;
@@ -332,18 +328,9 @@ export const resetPassword = async (req, res) => {
 
     await user.save();
 
-    res.json({
-      message: "Password reset successful"
-    });
+    res.json({ message: "Password reset successful" });
 
   } catch (error) {
-
-    logger.error(error.message);
-
-    res.status(500).json({
-      message: "Server error"
-    });
-
+    res.status(500).json({ message: error.message });
   }
-
 };

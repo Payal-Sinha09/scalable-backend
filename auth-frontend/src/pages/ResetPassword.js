@@ -107,7 +107,7 @@ export default function ResetPassword() {
           onChange={(e)=>setPassword(e.target.value)}
         />
 
-        <button>Reset Password</button>
+        <button type="submit">Reset Password</button>
 
       </form>
 
