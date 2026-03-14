@@ -134,13 +134,20 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 // =========================
 // CORS Configuration
 // =========================
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://auth-frontend-three-delta.vercel.app"
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true
+//   })
+// );
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://auth-frontend-three-delta.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: "*",
+    methods: ["GET","POST","PUT","DELETE"],
     credentials: true
   })
 );
