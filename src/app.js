@@ -1,59 +1,3 @@
-// import express from "express";
-// import dotenv from "dotenv";
-// import cors from "cors";
-
-// import connectDB from "./config/db.js";
-// import authRoutes from "./routes/authRoutes.js";
-// import userRoutes from "./routes/userRoutes.js";
-
-// dotenv.config();
-
-// const app = express();
-
-// // Middleware
-// app.use(cors());
-// // app.use(
-// //   cors({
-// //     origin: [
-// //       "http://localhost:3000",
-// //       "https://auth-frontend-three-delta.vercel.app",
-// //       /vercel\.app$/
-// //     ],
-// //     methods: ["GET", "POST", "PUT", "DELETE"],
-// //     allowedHeaders: ["Content-Type", "Authorization"],
-// //   })
-// // );
-// // app.use(
-// //   cors({
-// //     origin: [
-// //       "http://localhost:3000",
-// //       "https://auth-frontend-three-delta.vercel.app",
-// //       /vercel\.app$/
-// //     ],
-// //     methods: ["GET", "POST", "PUT", "DELETE"],
-// //     credentials: true
-// //   })
-// // );
-// app.use(express.json());
-
-// // Connect Database
-// connectDB();
-
-// // Test Route
-// app.get("/", (req, res) => {
-//   res.status(200).json({
-//     message: "Scalable Backend API is running 🚀",
-//     status: "OK"
-//   });
-// });
-
-// // Routes
-// app.use("/api/auth", authRoutes);
-// app.use("/api/user", userRoutes);
-
-// export default app;
-
-
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -69,24 +13,35 @@ const app = express();
 // =========================
 // 1️⃣ CORS — MUST BE FIRST
 // =========================
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://auth-frontend-three-delta.vercel.app"
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://auth-frontend-three-delta.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ OPTIONS added
-    allowedHeaders: ["Content-Type", "Authorization"],    // ✅ Needed for JWT
-    credentials: true                                     // ✅ Needed for cookies/auth
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS policy: Origin ${origin} not allowed`));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
   })
 );
 
-app.options("*", cors()); // ✅ Handle preflight for all routes
+// ✅ Handle preflight for all routes
+app.options("*", cors());
 
 // =========================
 // 2️⃣ Body Parser
 // =========================
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // =========================
 // 3️⃣ Connect Database
@@ -98,8 +53,10 @@ connectDB();
 // =========================
 app.get("/", (req, res) => {
   res.status(200).json({
+    success: true,
     message: "Scalable Backend API is running 🚀",
-    status: "OK"
+    status: "OK",
+    environment: process.env.NODE_ENV
   });
 });
 
@@ -108,5 +65,26 @@ app.get("/", (req, res) => {
 // =========================
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+
+// =========================
+// 6️⃣ 404 Handler
+// =========================
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`
+  });
+});
+
+// =========================
+// 7️⃣ Global Error Handler
+// =========================
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error"
+  });
+});
 
 export default app;
