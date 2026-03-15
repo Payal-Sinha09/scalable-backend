@@ -80,7 +80,7 @@ app.use(
   })
 );
 
-app.options("*", cors()); // ✅ Handle preflight for all routes
+app.options("/*", cors()); // ✅ Handle preflight for all routes
 
 // =========================
 // 2️⃣ Body Parser
