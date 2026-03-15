@@ -230,7 +230,7 @@ app.use(
 );
 
 // ✅ Handle ALL preflight requests immediately
-app.options("/*", cors());
+//app.options("/*", cors());
 
 // =========================
 // 2️⃣ Rate Limiting (Security)
